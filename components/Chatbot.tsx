@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 const knowledge: Record<string, string> = {
   hello: "Hey 👋 I'm Rosh's assistant. Ask me about projects, skills, or contact.",
@@ -45,21 +46,12 @@ export default function Chatbot() {
         onClick={() => setOpen(!open)}
         className="bg-cyan-500 text-black px-4 py-2 rounded-full shadow-lg hover:scale-105 transition flex items-center justify-center"
       >
-        {/* SVG ICON */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8L3 20l1.2-3.6A7.72 7.72 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-          />
-        </svg>
+        <Image
+          src="/chat.svg"
+          alt="Chat Icon"
+          width={24}
+          height={24}
+        />
       </button>
 
       {/* CHAT WINDOW */}
@@ -91,6 +83,9 @@ export default function Chatbot() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask something..."
+              onKeyDown={(e) => {
+                if (e.key === "Enter") sendMessage();
+              }}
             />
             <button
               onClick={sendMessage}
