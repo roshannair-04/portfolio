@@ -1,8 +1,8 @@
 const achievements = [
   {
-    title: "Built Real-time AI Surveillance System",
+    title: "3rd Prize in the Delloite Ideathon 2025-26",
     detail:
-      "Designed a multi-camera identity recognition system achieving ~25–30 FPS with improved accuracy."
+      "Selected for the Capstone project after being in the top 10 teams."
   },
   {
     title: "Red Hat Academy",
