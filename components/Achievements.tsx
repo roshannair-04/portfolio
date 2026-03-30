@@ -5,9 +5,9 @@ const achievements = [
       "Designed a multi-camera identity recognition system achieving ~25–30 FPS with improved accuracy."
   },
   {
-    title: "Deployed AI Resume Intelligence System",
+    title: "Red Hat Academy",
     detail:
-      "Built and deployed an NLP-based resume analysis platform using FastAPI and Render."
+      "Red Hat System Administration II (RH134-RHA) · Red Hat Academy · Apr 2025."
   },
   {
     title: "Specialization in Computer Vision",

@@ -24,7 +24,7 @@ export default function Hero() {
         </motion.h1>
 
         <p className="text-gray-400 max-w-xl mb-6">
-          I build intelligent systems using AI/ML and modern web technologies.
+          I build scalable AI systems focused on real-time inference, computer vision, and production-ready ML pipelines.
         </p>
 
         <div className="flex gap-4">

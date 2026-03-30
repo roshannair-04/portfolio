@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const projects = [
   {
-    title: "Resume Intelligence AI",
+    title: "Alignyx",
     description:
       "AI-driven system that evaluates candidate-job fit using NLP and semantic similarity. Deployed for real-time usage.",
     tech: ["Python", "NLP", "FastAPI", "Render"],
@@ -16,7 +16,7 @@ const projects = [
     description:
       "Real-time multi-camera system using YOLOv8, ArcFace, and InsightFace for identity recognition and threat detection (~25–30 FPS).",
     tech: ["Python", "OpenCV", "YOLOv8", "FastAPI", "PostgreSQL"],
-    github: "https://github.com/your-repo",
+    github: "https://github.com/roshannair-04/uwsd_proto",
     demo: null
   },
   {
@@ -24,7 +24,7 @@ const projects = [
     description:
       "Computer vision system using color masking and background subtraction to simulate invisibility in real-time.",
     tech: ["Python", "OpenCV", "NumPy"],
-    github: "https://github.com/your-repo",
+    github: "https://github.com/roshannair-04/hp",
     demo: null
   }
 ];

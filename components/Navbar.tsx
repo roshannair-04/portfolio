@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-const sections = ["about", "skills", "projects", "achievements", "contact"];
+const sections = ["about", "skills", "projects","experience", "achievements", "contact"];
 
 export default function Navbar() {
   const [active, setActive] = useState("");

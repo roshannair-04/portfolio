@@ -6,6 +6,7 @@ import Projects from "../components/Projects";
 import Achievements from "../components/Achievements";
 import Contact from "../components/Contact";
 import Chatbot from "../components/Chatbot";
+import Experience from "../components/Experience";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <About />
       <Skills />
       <Projects />
+      <Experience />
       <Achievements />
       <Contact />
       <Chatbot />
