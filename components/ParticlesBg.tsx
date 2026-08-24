@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Particles from "react-tsparticles";
-import { loadSlim } from "tsparticles-slim";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 
 export default function ParticlesBg() {
   const [init, setInit] = useState(false);
 
   useEffect(() => {
-    loadSlim(window.tsParticles).then(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => {
       setInit(true);
     });
   }, []);
@@ -18,51 +20,49 @@ export default function ParticlesBg() {
   return (
     <Particles
       id="tsparticles"
-      className="absolute inset-0 -z-10"
+      className="absolute inset-0 z-0"
       options={{
-  fullScreen: { enable: false },
+        fullScreen: { enable: false }, // IMPORTANT: keeps it inside section
+        background: { color: "transparent" }, // don't override your UI
+        fpsLimit: 60,
 
-  particles: {
-    number: { value: 40 },
+        particles: {
+          number: { value: 60 },
+          color: { value: "#22d3ee" },
 
-    size: { value: 2 },
+          links: {
+            enable: true,
+            distance: 150,
+            color: "#22d3ee",
+            opacity: 0.2,
+            width: 1,
+          },
 
-    move: {
-      enable: true,
-      speed: 0.8,   // ↑ increased slightly
-      direction: "none",
-      random: false,
-      straight: false,
-      outModes: { default: "out" }
-    },
+          move: {
+            enable: true,
+            speed: 1,
+            outModes: { default: "bounce" },
+          },
 
-    opacity: {
-      value: 0.4
-    },
+          opacity: { value: 0.5 },
+          size: { value: 2 },
+        },
 
-    links: {
-      enable: true,
-      color: "#22d3ee",
-      opacity: 0.25,
-      distance: 120
-    }
-  },
-
-  interactivity: {
-    events: {
-      onHover: {
-        enable: true,
-        mode: "grab"
-      }
-    },
-    modes: {
-      grab: {
-        distance: 140,
-        links: { opacity: 0.4 }
-      }
-    }
-  }
-}}
+        interactivity: {
+          events: {
+            onHover: {
+              enable: true,
+              mode: "grab",
+            },
+          },
+          modes: {
+            grab: {
+              distance: 150,
+              links: { opacity: 0.4 },
+            },
+          },
+        },
+      }}
     />
   );
 }

@@ -1,97 +1,79 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { ChatCircleDots, X, PaperPlaneRight } from "@phosphor-icons/react";
 
 const knowledge: Record<string, string> = {
-  hello: "Hey 👋 I'm Rosh's assistant. Ask me about projects, skills, or contact.",
-  projects: "Rosh has built AI systems like Resume Intelligence AI and a real-time surveillance system.",
-  skills: "Python, Computer Vision, NLP, FastAPI, React, and system design.",
-  contact: "You can reach him via email or LinkedIn in the contact section.",
-  resume: "You can download the resume from the home section."
+  hello: "Hi, I'm Roshan's assistant. Ask me about projects, skills, or contact.",
+  projects: "Roshan has built an AI surveillance detection system, Alignyx (resume matching), and Invisible Cloak.",
+  skills: "Python, computer vision (YOLOv8, ArcFace, OpenCV), NLP, and FastAPI.",
+  contact: "You can reach him by email or LinkedIn in the contact section.",
+  resume: "You can download the resume from the top of the page.",
 };
 
 function getResponse(input: string) {
   const text = input.toLowerCase();
-
-  for (let key in knowledge) {
+  for (const key in knowledge) {
     if (text.includes(key)) return knowledge[key];
   }
-
   return "Try asking about projects, skills, or contact.";
 }
 
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { sender: "bot", text: "Hi 👋 Ask me something!" }
+    { sender: "bot", text: "Ask me something about Roshan's work." },
   ]);
   const [input, setInput] = useState("");
 
   const sendMessage = () => {
     if (!input.trim()) return;
-
     const userMsg = { sender: "user", text: input };
     const botMsg = { sender: "bot", text: getResponse(input) };
-
-    setMessages([...messages, userMsg, botMsg]);
+    setMessages((prev) => [...prev, userMsg, botMsg]);
     setInput("");
   };
 
   return (
     <div className="fixed bottom-5 right-5 z-50">
-      
-      {/* BUTTON */}
       <button
         onClick={() => setOpen(!open)}
-        className="bg-cyan-500 text-black px-4 py-2 rounded-full shadow-lg hover:scale-105 transition flex items-center justify-center"
+        aria-label={open ? "Close assistant" : "Open assistant"}
+        className="h-11 w-11 flex items-center justify-center rounded-full bg-accent text-graphite shadow-lg hover:bg-accent-soft transition-colors duration-200"
       >
-        <Image
-          src="/chat.svg"
-          alt="Chat Icon"
-          width={24}
-          height={24}
-        />
+        {open ? <X size={19} weight="bold" /> : <ChatCircleDots size={20} weight="fill" />}
       </button>
 
-      {/* CHAT WINDOW */}
       {open && (
-        <div className="mt-2 w-80 h-96 bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl flex flex-col shadow-xl">
-
-          <div className="p-3 border-b border-gray-700 text-cyan-400">
+        <div className="mt-2 w-80 h-96 bg-surface border border-line rounded-md flex flex-col shadow-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-line-soft font-mono text-[11px] tracking-wide uppercase text-ink-faint">
             Assistant
           </div>
 
-          <div className="flex-1 p-3 overflow-y-auto text-sm space-y-2">
+          <div className="flex-1 p-4 overflow-y-auto text-[13.5px] space-y-3">
             {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`${
-                  msg.sender === "user"
-                    ? "text-right"
-                    : "text-left text-cyan-400"
-                }`}
-              >
+              <div key={i} className={msg.sender === "user" ? "text-right text-ink" : "text-left text-ink-dim"}>
                 {msg.text}
               </div>
             ))}
           </div>
 
-          <div className="p-2 flex gap-2">
+          <div className="p-3 flex gap-2 border-t border-line-soft">
             <input
-              className="flex-1 bg-transparent border border-gray-700 px-2 text-white rounded"
+              className="flex-1 bg-graphite border border-line px-3 py-2 text-[13px] text-ink rounded focus:outline-none focus:border-accent"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask something..."
+              placeholder="Ask something"
               onKeyDown={(e) => {
                 if (e.key === "Enter") sendMessage();
               }}
             />
             <button
               onClick={sendMessage}
-              className="px-3 bg-cyan-500 text-black rounded"
+              aria-label="Send message"
+              className="px-3 bg-accent text-graphite rounded hover:bg-accent-soft transition-colors"
             >
-              Send
+              <PaperPlaneRight size={15} weight="fill" />
             </button>
           </div>
         </div>

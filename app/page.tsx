@@ -3,14 +3,15 @@ import Hero from "../components/Hero";
 import About from "../components/About";
 import Skills from "../components/Skills";
 import Projects from "../components/Projects";
+import Experience from "../components/Experience";
 import Achievements from "../components/Achievements";
 import Contact from "../components/Contact";
 import Chatbot from "../components/Chatbot";
-import Experience from "../components/Experience";
 
 export default function Home() {
   return (
-    <main className="pt-20 bg-black text-white">
+    <main className="relative bg-graphite text-ink">
+      <div className="grid-field" aria-hidden="true" />
       <Navbar />
       <Hero />
       <About />

@@ -1,24 +1,35 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Sora, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const sora = Sora({
+  variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL("https://roshanportfolio-25.vercel.app"),
   title: {
-    default: "Roshan Nair",
-    template: "%s | Roshan Nair"
+    default: "Roshan Nair, Computer Vision Engineer",
+    template: "%s | Roshan Nair",
   },
-  description: "AI/ML Engineer building intelligent systems and scalable solutions.",
+  description:
+    "Roshan Nair builds real-time computer vision and machine learning systems: multi-camera detection and tracking, identity recognition, and production inference pipelines.",
+  openGraph: {
+    title: "Roshan Nair, Computer Vision Engineer",
+    description:
+      "Real-time computer vision and machine learning systems: detection, tracking, and identity recognition.",
+    url: "https://roshanportfolio-25.vercel.app",
+    siteName: "Roshan Nair",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -27,12 +38,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html lang="en" className={`${sora.variable} ${jetbrainsMono.variable}`}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

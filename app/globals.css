@@ -1,31 +1,70 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-graphite: #08090a;
+  --color-surface: #101214;
+  --color-surface-2: #17191c;
+  --color-line: #24272a;
+  --color-line-soft: #17191c;
+
+  --color-ink: #d8dce0;
+  --color-ink-dim: #9aa0a5;
+  --color-ink-faint: #656b70;
+
+  --color-accent: #4fbe7b;
+  --color-accent-soft: #7dd6a0;
+  --color-live: #4fbe7b;
+
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
 }
 
 body {
-  background: radial-gradient(circle at top, #0a0a0a, #000000);
-
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-html {
-  scroll-behavior: smooth;
+  background: var(--color-graphite);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
 }
 
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  color: var(--color-ink);
+}
+
+/* Fixed, pointer-events-none grid texture. Never applied to scrolling containers. */
+.grid-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--color-ink) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-ink) 4%, transparent) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 85%);
+}
+
+@keyframes scan {
+  0% {
+    top: -34%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+/* Reduced motion: collapse everything to instant/static. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

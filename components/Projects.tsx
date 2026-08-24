@@ -1,134 +1,136 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "motion/react";
+import { GithubLogo, ArrowUpRight } from "@phosphor-icons/react";
 
 const projects = [
   {
-    title: "Alignyx",
-    description:
-      "AI-driven system that evaluates candidate-job fit using NLP and semantic similarity. Deployed for real-time usage.",
-    tech: ["Python", "NLP", "FastAPI", "Render"],
-    github: "https://github.com/roshannair-04/resume-intelligence-ai",
-    demo: "https://resume-intelligence-ai-1.onrender.com/"
-  },
-  {
     title: "AI Surveillance Detection System",
     description:
-      "Real-time multi-camera system using YOLOv8, ArcFace, and InsightFace for identity recognition and threat detection (~25–30 FPS).",
-    tech: ["Python", "OpenCV", "YOLOv8", "FastAPI", "PostgreSQL"],
-    github: "https://github.com/roshannair-04/uwsd_proto",
-    demo: null
+      "Real-time multi-camera detection and tracking system using YOLOv8, ArcFace, and InsightFace for identity recognition, with cross-camera geo-mapping and automated alerting over WebSockets.",
+    tech: ["YOLOv8", "ArcFace", "InsightFace", "OpenCV", "FastAPI", "PostgreSQL"],
+    github: "https://github.com/roshannair-04/delhack",
+    demo: null,
+    metric: "25-30 FPS",
+    featured: true,
+  },
+  {
+    title: "Alignyx",
+    description:
+      "Resume-to-job matching system using NLP and semantic similarity, with a real-time inference API for candidate ranking.",
+    tech: ["Python", "NLP", "FastAPI"],
+    github: "https://github.com/roshannair-04/resume-intelligence-ai",
+    demo: "https://resume-intelligence-ai-1.onrender.com/",
+    metric: null,
+    featured: false,
   },
   {
     title: "Invisible Cloak",
     description:
-      "Computer vision system using color masking and background subtraction to simulate invisibility in real-time.",
+      "Real-time color masking and background subtraction to simulate invisibility, stable across varying lighting conditions.",
     tech: ["Python", "OpenCV", "NumPy"],
     github: "https://github.com/roshannair-04/hp",
-    demo: null
-  }
+    demo: null,
+    metric: "30 FPS",
+    featured: false,
+  },
 ];
 
-export default function Projects() {
+function CornerFrame() {
   return (
-    <section
-      id="projects"
-      className="min-h-screen px-6 md:px-20 py-20 bg-black text-white"
-    >
-      {/* Title */}
-      <h2 className="text-3xl md:text-4xl font-bold mb-12 text-cyan-400">
-        Projects
-      </h2>
+    <>
+      {(["tl", "tr", "bl", "br"] as const).map((corner) => (
+        <span
+          key={corner}
+          className={[
+            "pointer-events-none absolute w-3.5 h-3.5 border-accent/0 transition-colors duration-300 group-hover:border-accent/70",
+            corner === "tl" && "top-3 left-3 border-t-2 border-l-2",
+            corner === "tr" && "top-3 right-3 border-t-2 border-r-2",
+            corner === "bl" && "bottom-3 left-3 border-b-2 border-l-2",
+            corner === "br" && "bottom-3 right-3 border-b-2 border-r-2",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+        />
+      ))}
+    </>
+  );
+}
 
-      {/* Grid with stagger */}
-      <motion.div
-        className="grid md:grid-cols-2 gap-8"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={{
-          hidden: {},
-          visible: {
-            transition: {
-              staggerChildren: 0.15,
-            },
-          },
-        }}
-      >
-        {projects.map((project, index) => (
-          <motion.div
-            key={index}
-            variants={{
-              hidden: { opacity: 0, y: 40 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="border border-gray-800 p-6 rounded-xl hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/10 transition duration-300 bg-gray-900/40 backdrop-blur"
-          >
-            {/* Title */}
-            <div className="flex justify-between items-center mb-3">
-              <h3 className="text-xl font-semibold flex items-center gap-2">
-                {project.title}
-                {index === 0 && (
-                  <span className="text-xs text-purple-400">
-                    ★ Featured
+export default function Projects() {
+  const reduce = useReducedMotion();
+
+  return (
+    <section id="projects" className="px-6 md:px-10 py-24 md:py-32 border-t border-line-soft">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-2xl md:text-3xl font-semibold mb-12">Projects</h2>
+
+        <div className="grid md:grid-cols-3 md:grid-rows-2 gap-5">
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.title}
+              initial={reduce ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.5, delay: index * 0.06 }}
+              className={`group relative border border-line rounded-md p-7 bg-surface hover:border-line hover:bg-surface-2 transition-colors duration-300 flex flex-col ${
+                project.featured ? "md:col-span-2 md:row-span-2" : "md:col-span-1"
+              }`}
+            >
+              <CornerFrame />
+
+              <div className="flex items-start justify-between gap-3 mb-3">
+                <h3 className="text-lg font-semibold leading-snug">{project.title}</h3>
+                {project.metric && (
+                  <span className="shrink-0 font-mono text-[11px] text-accent border border-accent/30 rounded px-1.5 py-0.5">
+                    {project.metric}
                   </span>
                 )}
-              </h3>
+              </div>
 
-              {project.demo && (
-                <span className="text-xs text-green-400 animate-pulse">
-                  ● Live
-                </span>
-              )}
-            </div>
+              <p className="text-ink-dim text-[13.5px] leading-relaxed mb-5">
+                {project.description}
+              </p>
 
-            {/* Description */}
-            <p className="text-gray-400 mb-4 leading-relaxed">
-              {project.description}
-            </p>
+              <div className="flex flex-wrap gap-1.5 mb-6">
+                {project.tech.map((t) => (
+                  <span
+                    key={t}
+                    className="font-mono text-[10.5px] text-ink-faint border border-line-soft rounded px-1.5 py-0.5"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
 
-            {/* Tech */}
-            <div className="flex flex-wrap gap-2 mb-5">
-              {project.tech.map((t, i) => (
-                <span
-                  key={i}
-                  className="text-xs border border-cyan-400 text-cyan-400 px-2 py-1 rounded hover:bg-cyan-400 hover:text-black transition"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-
-            {/* Links */}
-            <div className="flex gap-4 text-sm mt-4">
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1 border border-cyan-400 text-cyan-400 rounded hover:bg-cyan-400 hover:text-black transition"
-              >
-                GitHub
-              </a>
-
-              {project.demo ? (
+              <div className="mt-auto flex items-center gap-4 text-[13px]">
                 <a
-                  href={project.demo}
+                  href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1 bg-cyan-500 text-black rounded hover:scale-105 transition"
+                  className="inline-flex items-center gap-1.5 text-ink-dim hover:text-ink transition-colors"
                 >
-                  Live Demo
+                  <GithubLogo size={15} /> Code
                 </a>
-              ) : (
-                <span className="text-gray-500">
-                  ML System (Local/GPU)
-                </span>
-              )}
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+
+                {project.demo ? (
+                  <a
+                    href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-live hover:text-accent-soft transition-colors"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-live" />
+                    Live demo <ArrowUpRight size={13} weight="bold" />
+                  </a>
+                ) : (
+                  <span className="text-ink-faint">GPU inference, not deployed</span>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

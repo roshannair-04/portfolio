@@ -1,44 +1,56 @@
+"use client";
+
+import { motion, useReducedMotion } from "motion/react";
+
 const achievements = [
   {
-    title: "3rd Prize in the Delloite Ideathon 2025-26",
-    detail:
-      "Selected for the Capstone project after being in the top 10 teams."
+    title: "2nd place, Smart Campus Hackathon",
+    meta: "South Asian University, 2026",
   },
   {
-    title: "Red Hat Academy",
-    detail:
-      "Red Hat System Administration II (RH134-RHA) · Red Hat Academy · Apr 2025."
+    title: "3rd place, AI-Powered Solution Expo",
+    meta: "Manipal University Jaipur, Apr 2026",
   },
   {
-    title: "Specialization in Computer Vision",
-    detail:
-      "Focused on identity recognition, real-time inference, and AI system optimization."
-  }
+    title: "3rd place, Bootcamp '20 and Ideathon '25",
+    meta: "Competitive innovation events",
+  },
+  {
+    title: "Introduction to Machine Learning",
+    meta: "NPTEL, IIT Madras",
+  },
+  {
+    title: "Deep Learning",
+    meta: "NPTEL, IIT Madras",
+  },
+  {
+    title: "Deloitte Capstone Program",
+    meta: "2025",
+  },
 ];
 
 export default function Achievements() {
+  const reduce = useReducedMotion();
+
   return (
-    <section id="achievements" className="min-h-screen px-8 md:px-20 py-20">
-      
-      <h2 className="text-3xl md:text-4xl font-bold mb-10 text-cyan-400">
-        Achievements
-      </h2>
+    <section id="achievements" className="px-6 md:px-10 py-24 md:py-32 border-t border-line-soft">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-2xl md:text-3xl font-semibold mb-12">Achievements</h2>
 
-      <div className="space-y-6">
-        {achievements.map((item, index) => (
-          <div
-            key={index}
-            className="border border-gray-800 p-6 rounded-xl hover:border-cyan-400 transition"
-          >
-            <h3 className="text-xl font-semibold mb-2">
-              {item.title}
-            </h3>
-
-            <p className="text-gray-400">
-              {item.detail}
-            </p>
-          </div>
-        ))}
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl divide-y divide-line-soft border-t border-line-soft"
+        >
+          {achievements.map((a) => (
+            <div key={a.title} className="flex flex-wrap justify-between items-baseline gap-x-4 gap-y-1 py-4">
+              <span className="text-[14.5px] text-ink">{a.title}</span>
+              <span className="font-mono text-[11px] text-ink-faint whitespace-nowrap">{a.meta}</span>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

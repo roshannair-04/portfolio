@@ -1,82 +1,99 @@
 "use client";
 
+import { motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { ArrowRight } from "@phosphor-icons/react";
+
+const stats = [
+  { value: "25-30", unit: "FPS", label: "real-time detection across multi-camera feeds" },
+  { value: "+15", unit: "%", label: "recognition accuracy from embedding optimization" },
+  { value: "3", unit: "", label: "hackathon and ideathon podium finishes" },
+];
 
 export default function About() {
-  return (
-    <section
-      id="about"
-      className="min-h-screen flex items-center px-8 md:px-20 py-20"
-    >
-      <div className="grid md:grid-cols-2 gap-10 items-center">
-        
-        {/* LEFT — IMAGE */}
-        <motion.div
-          className="relative group"
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          animate={{ y: [0, -8, 0] }}
-          transition={{
-            duration: 0.6,
-            y: {
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-            },
-          }}
-          viewport={{ once: true }}
-        >
-          {/* Glow */}
-          <div className="absolute inset-0 bg-cyan-500/10 blur-3xl rounded-xl opacity-70"></div>
+  const reduce = useReducedMotion();
 
-          {/* Badge */}
-          <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition duration-300 z-10">
-            <div className="bg-green-500 text-black text-xs px-3 py-1 rounded-full shadow-lg">
-              ● Open to Work
-            </div>
+  return (
+    <section id="about" className="px-6 md:px-10 py-24 md:py-32">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-[0.85fr_1.15fr] gap-14 md:gap-16 items-start">
+        {/* IMAGE */}
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.6 }}
+          className="relative w-[220px] md:w-full md:max-w-[260px] mx-auto md:mx-0 group"
+        >
+          <div className="relative aspect-[4/5] rounded-md overflow-hidden border border-line bg-surface">
+            <Image
+              src="/profile.jpg"
+              alt="Roshan Nair"
+              fill
+              sizes="(min-width: 768px) 260px, 220px"
+              className="object-cover grayscale-[35%] contrast-[1.05] transition-[filter] duration-300 group-hover:grayscale-0"
+            />
+          </div>
+          {(["tl", "tr", "bl", "br"] as const).map((corner) => (
+            <span
+              key={corner}
+              className={[
+                "absolute w-4 h-4 border-accent/50 transition-all duration-300 group-hover:border-accent",
+                corner === "tl" && "-top-1.5 -left-1.5 border-t-2 border-l-2",
+                corner === "tr" && "-top-1.5 -right-1.5 border-t-2 border-r-2",
+                corner === "bl" && "-bottom-1.5 -left-1.5 border-b-2 border-l-2",
+                corner === "br" && "-bottom-1.5 -right-1.5 border-b-2 border-r-2",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            />
+          ))}
+          <p className="mt-4 font-mono text-[11px] text-live text-center flex items-center justify-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-live" />
+            Open to work
+          </p>
+        </motion.div>
+
+        {/* TEXT */}
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.08 }}
+        >
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6">About</h2>
+
+          <p className="text-ink-dim leading-relaxed mb-4 max-w-[62ch]">
+            I work on computer vision and real-time inference, finishing a B.Tech in
+            Computer Science (AI &amp; ML) at Manipal University Jaipur. My focus is systems
+            that hold up outside a notebook: multi-camera tracking, identity recognition, and
+            inference pipelines fast enough to run live.
+          </p>
+
+          <p className="text-ink-dim leading-relaxed mb-10 max-w-[62ch]">
+            Most recently I worked with Deloitte on a capstone project applying explainable
+            AI to fairness in student loan decisions, using Explainable Boosting Machines and
+            synthetic data to stress-test the models.
+          </p>
+
+          <div className="grid grid-cols-3 gap-6 mb-10 pt-6 border-t border-line-soft">
+            {stats.map((s) => (
+              <div key={s.label}>
+                <div className="font-mono text-xl md:text-2xl text-accent">
+                  {s.value}
+                  <span className="text-sm align-top">{s.unit}</span>
+                </div>
+                <p className="text-[12px] text-ink-faint leading-snug mt-1">{s.label}</p>
+              </div>
+            ))}
           </div>
 
-          {/* Image */}
-          <Image
-            src="/profile.jpg"
-            alt="Rosh"
-            width={300}
-            height={300}
-            className="relative rounded-xl border border-gray-800 object-cover w-[320px] h-[360px] transition duration-300 group-hover:scale-105"
-          />
-        </motion.div>
-
-        {/* RIGHT — TEXT */}
-        <motion.div
-          className="max-w-xl"
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-cyan-400">
-            About Me
-          </h2>
-
-          <p className="text-gray-400 leading-relaxed mb-4">
-            I build AI systems that don’t just run — they scale, adapt, and solve real-world problems.
-          </p>
-
-          <p className="text-gray-500 mb-6">
-            I work on computer vision, real-time inference, and backend systems,
-            aiming to build scalable and impactful AI solutions.
-          </p>
-
           <a
-            href="/resume.pdf"
-            download
-            className="px-6 py-2 border border-cyan-400 text-cyan-400 rounded-lg hover:bg-cyan-400 hover:text-black transition duration-300 hover:shadow-lg hover:shadow-cyan-500/20"
+            href="#experience"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 border border-line text-ink text-sm font-medium rounded-md hover:border-accent hover:text-accent transition-colors duration-200"
           >
-            Download Resume
+            See experience <ArrowRight size={15} weight="bold" />
           </a>
         </motion.div>
-
       </div>
     </section>
   );
