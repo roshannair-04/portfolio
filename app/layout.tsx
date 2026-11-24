@@ -1,45 +1,49 @@
-import type { Metadata } from "next";
-import { Sora, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import SmoothScroll from "@/components/SmoothScroll";
+import Cursor from "@/components/Cursor";
 import "./globals.css";
 
-const sora = Sora({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+const instrument = localFont({
+  src: [
+    { path: "./fonts/instrument-serif-latin-400-normal.woff2", style: "normal", weight: "400" },
+    { path: "./fonts/instrument-serif-latin-400-italic.woff2", style: "italic", weight: "400" },
+  ],
+  variable: "--font-instrument",
+  display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-});
+const description =
+  "Roshan M Nair builds real-time AI: computer vision that recognises people across cameras, NLP that matches resumes to jobs, adaptive learning tools, and PatternBattle, a live DSA battle platform.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://roshanportfolio-25.vercel.app"),
-  title: {
-    default: "Roshan Nair, Computer Vision Engineer",
-    template: "%s | Roshan Nair",
-  },
-  description:
-    "Roshan Nair builds real-time computer vision and machine learning systems: multi-camera detection and tracking, identity recognition, and production inference pipelines.",
+  title: { default: "Roshan M Nair — AI & ML Engineer", template: "%s | Roshan M Nair" },
+  description,
   openGraph: {
-    title: "Roshan Nair, Computer Vision Engineer",
-    description:
-      "Real-time computer vision and machine learning systems: detection, tracking, and identity recognition.",
+    title: "Roshan M Nair — AI & ML Engineer",
+    description,
     url: "https://roshanportfolio-25.vercel.app",
-    siteName: "Roshan Nair",
+    siteName: "Roshan M Nair",
     type: "website",
+    images: [{ url: "/img/portrait.webp", width: 1050, height: 1400 }],
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = { themeColor: "#000000" };
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sora.variable} ${jetbrainsMono.variable}`}>
-      <body className="antialiased">{children}</body>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} ${instrument.variable}`}>
+      <body>
+        <SmoothScroll />
+        <Cursor />
+        <div className="column-grid" aria-hidden="true" />
+        <div className="grain" aria-hidden="true" />
+        {children}
+      </body>
     </html>
   );
 }

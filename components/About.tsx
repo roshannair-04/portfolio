@@ -1,99 +1,100 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { useRef } from "react";
 import Image from "next/image";
-import { ArrowRight } from "@phosphor-icons/react";
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
 
-const stats = [
-  { value: "25-30", unit: "FPS", label: "real-time detection across multi-camera feeds" },
-  { value: "+15", unit: "%", label: "recognition accuracy from embedding optimization" },
-  { value: "3", unit: "", label: "hackathon and ideathon podium finishes" },
-];
+const statement =
+  "Most models die in a notebook. I like the part after that: making them fast enough to run live, light enough to deploy, and clear enough that people trust what they say.";
+
+function Word({ word, progress, range }: { word: string; progress: MotionValue<number>; range: [number, number] }) {
+  const opacity = useTransform(progress, range, [0.12, 1]);
+  const blur = useTransform(progress, range, ["blur(6px)", "blur(0px)"]);
+  return (
+    <motion.span style={{ opacity, filter: blur }} className="inline-block will-change-[opacity,filter]">
+      {word}&nbsp;
+    </motion.span>
+  );
+}
+
+export function Marquee() {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
+  const items = ["Computer vision", "NLP & matching", "Real-time systems", "Explainable ML", "Live code judging"];
+  const row = (
+    <span className="flex shrink-0 items-center">
+      {items.map((t) => (
+        <span key={t} className="flex items-center">
+          <span className="display px-6 text-[clamp(3rem,8vw,8rem)] italic text-ink/90 md:px-10">{t}</span>
+          <svg viewBox="0 0 32 32" className="h-8 w-8 shrink-0 md:h-12 md:w-12" aria-hidden="true">
+            <path d="M4 10V5.5C4 4.7 4.7 4 5.5 4H10M22 4h4.5c.8 0 1.5.7 1.5 1.5V10M28 22v4.5c0 .8-.7 1.5-1.5 1.5H22M10 28H5.5C4.7 28 4 27.3 4 26.5V22" stroke="#4fbe7b" strokeWidth="2.6" strokeLinecap="round" fill="none" />
+            <rect x="13.5" y="13.5" width="5" height="5" rx=".75" fill="#4fbe7b" />
+          </svg>
+        </span>
+      ))}
+    </span>
+  );
+  return (
+    <div ref={ref} aria-hidden="true" className="relative overflow-hidden border-y border-hairline py-6 md:py-10">
+      <motion.div style={{ x: reduce ? 0 : x }}>
+        <div className="flex w-max animate-[marquee_38s_linear_infinite]">
+          {row}
+          {row}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
 
 export default function About() {
+  const ref = useRef<HTMLParagraphElement>(null);
   const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "end 0.5"] });
+  const words = statement.split(" ");
 
   return (
-    <section id="about" className="px-6 md:px-10 py-24 md:py-32">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-[0.85fr_1.15fr] gap-14 md:gap-16 items-start">
-        {/* IMAGE */}
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6 }}
-          className="relative w-[220px] md:w-full md:max-w-[260px] mx-auto md:mx-0 group"
-        >
-          <div className="relative aspect-[4/5] rounded-md overflow-hidden border border-line bg-surface">
-            <Image
-              src="/profile.jpg"
-              alt="Roshan Nair"
-              fill
-              sizes="(min-width: 768px) 260px, 220px"
-              className="object-cover grayscale-[35%] contrast-[1.05] transition-[filter] duration-300 group-hover:grayscale-0"
-            />
+    <section id="about" className="relative px-5 py-28 md:px-10 md:py-40">
+      <div className="mx-auto max-w-[1440px]">
+        <p className="label mb-10 text-mute">(01) About</p>
+        <p ref={ref} className="display max-w-[22ch] text-[clamp(2.4rem,5.6vw,5.6rem)] leading-[1.02]">
+          {reduce
+            ? statement
+            : words.map((w, i) => (
+                <Word key={i} word={w} progress={scrollYProgress} range={[i / words.length, (i + 1) / words.length]} />
+              ))}
+        </p>
+
+        <div className="mt-20 grid gap-10 border-t border-hairline pt-10 md:grid-cols-12 md:gap-6">
+          <div className="md:col-span-3">
+            <p className="label text-mute">Education</p>
+            <p className="mt-2 text-[16px] leading-relaxed text-body">
+              B.Tech, Computer Science &amp; Engineering (AI &amp; ML)
+              <br />
+              Manipal University Jaipur, 2023–2027
+            </p>
           </div>
-          {(["tl", "tr", "bl", "br"] as const).map((corner) => (
-            <span
-              key={corner}
-              className={[
-                "absolute w-4 h-4 border-accent/50 transition-all duration-300 group-hover:border-accent",
-                corner === "tl" && "-top-1.5 -left-1.5 border-t-2 border-l-2",
-                corner === "tr" && "-top-1.5 -right-1.5 border-t-2 border-r-2",
-                corner === "bl" && "-bottom-1.5 -left-1.5 border-b-2 border-l-2",
-                corner === "br" && "-bottom-1.5 -right-1.5 border-b-2 border-r-2",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-            />
-          ))}
-          <p className="mt-4 font-mono text-[11px] text-live text-center flex items-center justify-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-live" />
-            Open to work
-          </p>
-        </motion.div>
-
-        {/* TEXT */}
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.08 }}
-        >
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6">About</h2>
-
-          <p className="text-ink-dim leading-relaxed mb-4 max-w-[62ch]">
-            I work on computer vision and real-time inference, finishing a B.Tech in
-            Computer Science (AI &amp; ML) at Manipal University Jaipur. My focus is systems
-            that hold up outside a notebook: multi-camera tracking, identity recognition, and
-            inference pipelines fast enough to run live.
-          </p>
-
-          <p className="text-ink-dim leading-relaxed mb-10 max-w-[62ch]">
-            Most recently I worked with Deloitte on a capstone project applying explainable
-            AI to fairness in student loan decisions, using Explainable Boosting Machines and
-            synthetic data to stress-test the models.
-          </p>
-
-          <div className="grid grid-cols-3 gap-6 mb-10 pt-6 border-t border-line-soft">
-            {stats.map((s) => (
-              <div key={s.label}>
-                <div className="font-mono text-xl md:text-2xl text-accent">
-                  {s.value}
-                  <span className="text-sm align-top">{s.unit}</span>
-                </div>
-                <p className="text-[12px] text-ink-faint leading-snug mt-1">{s.label}</p>
-              </div>
-            ))}
+          <div className="md:col-span-4">
+            <p className="label text-mute">Right now</p>
+            <p className="mt-2 text-[16px] leading-relaxed text-body">
+              Co-founder at Engineek, a four-person team. We’re building PatternBattle, a platform for learning DSA by
+              pattern and battling friends in real time.
+            </p>
           </div>
-
-          <a
-            href="#experience"
-            className="inline-flex items-center gap-1.5 px-5 py-2.5 border border-line text-ink text-sm font-medium rounded-md hover:border-accent hover:text-accent transition-colors duration-200"
-          >
-            See experience <ArrowRight size={15} weight="bold" />
-          </a>
-        </motion.div>
+          <div className="md:col-span-4 md:col-start-9">
+            <figure className="group relative aspect-[4/5] overflow-hidden rounded-[12px] border border-hairline-strong" data-cursor="hi">
+              <Image
+                src="/img/selfie-hills.webp"
+                alt="Roshan taking a selfie in the hills"
+                fill
+                sizes="(min-width:768px) 30vw, 92vw"
+                className="object-cover grayscale transition-[filter,transform] duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.04] group-hover:grayscale-0"
+              />
+              <figcaption className="label absolute bottom-3 left-3 text-ink/80">Fig. 02 — Hills over hackathons, sometimes</figcaption>
+            </figure>
+          </div>
+        </div>
       </div>
     </section>
   );

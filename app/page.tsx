@@ -1,26 +1,29 @@
-import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
-import About from "../components/About";
-import Skills from "../components/Skills";
-import Projects from "../components/Projects";
-import Experience from "../components/Experience";
-import Achievements from "../components/Achievements";
-import Contact from "../components/Contact";
-import Chatbot from "../components/Chatbot";
+import Loader from "@/components/Loader";
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
+import About, { Marquee } from "@/components/About";
+import Flagship from "@/components/Flagship";
+import Work from "@/components/Work";
+import PatternBattle from "@/components/PatternBattle";
+import { Recognition, Toolkit } from "@/components/Recognition";
+import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
-    <main className="relative bg-graphite text-ink">
-      <div className="grid-field" aria-hidden="true" />
-      <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Achievements />
+    <>
+      <Loader />
+      <Header />
+      <main className="relative z-10">
+        <Hero />
+        <Marquee />
+        <About />
+        <Flagship />
+        <Work />
+        <PatternBattle />
+        <Recognition />
+        <Toolkit />
+      </main>
       <Contact />
-      <Chatbot />
-    </main>
+    </>
   );
 }

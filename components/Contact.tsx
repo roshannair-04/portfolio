@@ -1,83 +1,66 @@
 "use client";
 
 import { useState } from "react";
-import { EnvelopeSimple, GithubLogo, LinkedinLogo, Copy, Check } from "@phosphor-icons/react";
-
-const links = [
-  {
-    label: "roshannair2004@gmail.com",
-    href: "mailto:roshannair2004@gmail.com",
-    icon: EnvelopeSimple,
-    copyValue: "roshannair2004@gmail.com",
-  },
-  {
-    label: "roshannair-04",
-    href: "https://github.com/roshannair-04",
-    icon: GithubLogo,
-  },
-  {
-    label: "roshannair2004",
-    href: "https://linkedin.com/in/roshannair2004",
-    icon: LinkedinLogo,
-  },
-];
+import { site } from "@/lib/content";
+import { useClock } from "./Header";
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
+  const time = useClock();
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText("roshannair2004@gmail.com");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(site.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      location.href = `mailto:${site.email}`;
+    }
   };
 
   return (
-    <section id="contact" className="px-6 md:px-10 py-24 md:py-32 border-t border-line-soft">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-[0.9fr_1.1fr] gap-12 items-start">
-        <div>
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6">Contact</h2>
-          <p className="text-ink-dim leading-relaxed max-w-[46ch]">
-            I&apos;m open to AI and computer vision roles, plus interesting collaborations.
-            Reach out through any of the channels here.
-          </p>
+    <footer id="contact" className="relative z-10 overflow-hidden px-5 pb-8 pt-32 md:px-10 md:pt-44">
+      <div className="glow" />
+      <div className="relative mx-auto max-w-[1440px]">
+        <p className="label text-mute">(07) Let’s work together</p>
+        <p className="mt-5 max-w-[40ch] text-[17px] text-dim">
+          Looking for internships and full-time roles in AI, ML and data. Collaborations welcome too.
+        </p>
+
+        <button onClick={copy} data-cursor={copied ? "copied" : "copy"} className="group mt-10 block w-full text-left" aria-label={`Copy ${site.email}`}>
+          <span className="display block break-all text-[clamp(2.4rem,8.4vw,9rem)] leading-[0.95] transition-colors duration-300 group-hover:text-signal">
+            {site.email.split("@")[0]}
+            <em className="text-mute transition-colors duration-300 group-hover:text-signal">@gmail.com</em>
+          </span>
+          <span className="label mt-4 block text-mute">{copied ? "Copied. Talk soon." : "Click to copy"}</span>
+        </button>
+
+        <div className="mt-14 flex flex-wrap gap-3">
+          {[
+            ["LinkedIn", site.linkedin],
+            ["GitHub", site.github],
+            ["Email", `mailto:${site.email}`],
+          ].map(([l, h]) => (
+            <a
+              key={l}
+              href={h}
+              {...(h.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className="inline-flex h-11 items-center gap-2 rounded-full border border-hairline-strong px-5 text-[15px] transition-colors hover:border-signal hover:text-signal"
+            >
+              {l} <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+          <a href={site.resume} download className="inline-flex h-11 items-center rounded-full bg-ink px-5 text-[15px] font-medium text-black transition-colors hover:bg-signal">
+            Download résumé
+          </a>
         </div>
 
-        <div className="flex flex-col gap-3">
-          {links.map((link) => {
-            const Icon = link.icon;
-            return (
-              <div
-                key={link.label}
-                className="group flex items-center justify-between gap-4 px-5 py-4 rounded-md border border-line bg-surface hover:border-accent/50 transition-colors duration-200"
-              >
-                <a
-                  href={link.href}
-                  target={link.href.startsWith("http") ? "_blank" : undefined}
-                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="flex items-center gap-3.5 flex-1 min-w-0"
-                >
-                  <Icon size={19} className="text-accent shrink-0" />
-                  <span className="text-[14px] truncate">{link.label}</span>
-                </a>
-
-                {link.copyValue && (
-                  <button
-                    onClick={handleCopy}
-                    aria-label="Copy email address"
-                    className="p-1.5 rounded hover:bg-surface-2 transition-colors shrink-0"
-                  >
-                    {copied ? (
-                      <Check size={16} className="text-live" />
-                    ) : (
-                      <Copy size={16} className="text-ink-faint" />
-                    )}
-                  </button>
-                )}
-              </div>
-            );
-          })}
+        <div className="label mt-28 flex flex-wrap items-center justify-between gap-4 border-t border-hairline pt-6 text-mute">
+          <span>Designed &amp; built by {site.name}</span>
+          <span className="tabular-nums">Kollam, {time.slice(0, 5)} IST</span>
+          <a href="#top" className="hover:text-ink">Back to top ↑</a>
         </div>
       </div>
-    </section>
+    </footer>
   );
 }
